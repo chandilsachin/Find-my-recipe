@@ -1,8 +1,11 @@
 package com.chandilsachin.simpragmaassignment.fragments.racipeList;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Recipe {
+public class Recipe implements Parcelable{
 
     @SerializedName("title")
     private String title;
@@ -54,4 +57,33 @@ public class Recipe {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    private Recipe(Parcel in){
+        String[] data = new String[4];
+        in.readStringArray(data);
+        this.title = data[0];
+        this.href = data[1];
+        this.ingredients = data[2];
+        this.thumbnail = data[3];
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeStringArray(new String[]{title, href, ingredients, thumbnail});
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

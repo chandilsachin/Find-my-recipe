@@ -8,4 +8,7 @@
     <string name="search">Search</string>
     <string name="searchMessage">Feel like cooking something? Try searching with ingredients you have separated by comma and see magic.</string>
     <string name="emptySearchResultMsg">Sorry we couldn\'t find anything related to \"%s\". Are these name of ingredients correct? Please check and try again.</string>
+
+
+    <string name="recipeImageTransitionName">recipeImageTransitionName</string>
 </resources>

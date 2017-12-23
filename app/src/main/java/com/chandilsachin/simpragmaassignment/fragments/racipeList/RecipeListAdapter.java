@@ -1,7 +1,9 @@
 package com.chandilsachin.simpragmaassignment.fragments.racipeList;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chandilsachin.simpragmaassignment.R;
+import com.chandilsachin.simpragmaassignment.utils.Action2Callback;
 import com.chandilsachin.simpragmaassignment.utils.ActionCallback;
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
     private List<Recipe> list;
     private LayoutInflater layoutInflater;
-    private ActionCallback<Recipe> onItemClickListener;
+    private Action2Callback<ImageView, Recipe> onItemClickListener;
 
     public RecipeListAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
@@ -38,10 +41,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         Recipe recipe = list.get(position);
         holder.bindView(recipe);
+        ViewCompat.setTransitionName(holder.ivRecipeImage, recipe.getTitle() + position);
         holder.itemView.setOnClickListener(v -> {
-            if(onItemClickListener != null)
-                onItemClickListener.call(recipe);
+            if (onItemClickListener != null)
+                onItemClickListener.call(holder.ivRecipeImage, recipe);
         });
+
     }
 
     @Override
@@ -58,7 +63,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         list.clear();
     }
 
-    public void setOnItemClickListener(ActionCallback<Recipe> onItemClickListener) {
+    public void setOnItemClickListener(Action2Callback<ImageView, Recipe> onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -74,9 +79,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindView(Recipe recipe){
+        public void bindView(Recipe recipe) {
             Glide.with(ivRecipeImage.getContext()).load(recipe.getThumbnail()).into(ivRecipeImage);
-            tvRecipeTitle.setText(recipe.getTitle().trim());
+            tvRecipeTitle.setText(Html.fromHtml(recipe.getTitle().trim()));
         }
     }
 }

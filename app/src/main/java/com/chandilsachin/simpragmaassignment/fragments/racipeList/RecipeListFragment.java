@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chandilsachin.simpragmaassignment.R;
+import com.chandilsachin.simpragmaassignment.fragments.recipeDetails.RecipeDetailsFragment;
 import com.chandilsachin.simpragmaassignment.utils.ConstantMethod;
 import com.chandilsachin.simpragmaassignment.utils.LifeCycleFragment;
 
@@ -122,11 +125,13 @@ public class RecipeListFragment extends LifeCycleFragment {
 
     @Override
     public void setUpEvents() {
-        mRecipeListAdapter.setOnItemClickListener(recipe -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(recipe.getHref()));
-            startActivity(intent);
-
+        mRecipeListAdapter.setOnItemClickListener((sharedView, recipe) -> {
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setData(Uri.parse(recipe.getHref()));
+//            startActivity(intent);
+            ConstantMethod.loadFragment((AppCompatActivity) getActivity(),
+                    R.id.fragmentContainer, RecipeDetailsFragment.newInstance(recipe,
+                            ViewCompat.getTransitionName(sharedView)), sharedView);
         });
     }
 
