@@ -2,15 +2,12 @@ package com.chandilsachin.simpragmaassignment.fragments.racipeList;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -18,14 +15,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chandilsachin.simpragmaassignment.R;
 import com.chandilsachin.simpragmaassignment.fragments.recipeDetails.RecipeDetailsFragment;
 import com.chandilsachin.simpragmaassignment.utils.ConstantMethod;
 import com.chandilsachin.simpragmaassignment.utils.LifeCycleFragment;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -48,6 +42,8 @@ public class RecipeListFragment extends LifeCycleFragment {
     private boolean searching;
     private boolean searchMode;
     private String searchQuery;
+    private boolean fetching;
+    private int pageCount = 1;
 
     public RecipeListFragment() {
         // Required empty public constructor
@@ -63,6 +59,7 @@ public class RecipeListFragment extends LifeCycleFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+        pageCount = 1;
         setHasOptionsMenu(true);
     }
 
@@ -77,7 +74,7 @@ public class RecipeListFragment extends LifeCycleFragment {
         mViewModel = ViewModelProviders.of(this).get(RecipeListViewModel.class);
         mRecipeListAdapter = new RecipeListAdapter(getContext());
 
-        mGridLayoutManager = new GridLayoutManager(getContext(), 2);
+        mGridLayoutManager = new CustomGridLayoutManager(getContext(), 2);
         rvRecipeList.setLayoutManager(mGridLayoutManager);
         rvRecipeList.setAdapter(mRecipeListAdapter);
 
@@ -92,7 +89,6 @@ public class RecipeListFragment extends LifeCycleFragment {
                 if(searchMode && searching)
                     mRecipeListAdapter.clearItems();
                 mRecipeListAdapter.addItems(list);
-                searching = false;
             }else if(searching){
                 tvSearchMsg.setText(String.format(getString(R.string.emptySearchResultMsg), searchQuery));
                 tvSearchMsg.setVisibility(View.VISIBLE);
@@ -107,6 +103,8 @@ public class RecipeListFragment extends LifeCycleFragment {
                 tvSearchMsg.setVisibility(View.GONE);
                 rvRecipeList.setVisibility(View.VISIBLE);
             }
+
+            searching = false;
         });
 
         if(mRecipeListAdapter.getItemCount() < 1){
@@ -120,18 +118,43 @@ public class RecipeListFragment extends LifeCycleFragment {
             }
             srlRecipeList.setRefreshing(false);
         });
-        //mViewModel.searchRecipe("potato", 1);
+        //mViewModel.searchRecipe("", pageCount);
     }
 
     @Override
     public void setUpEvents() {
         mRecipeListAdapter.setOnItemClickListener((sharedView, recipe) -> {
-//            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.setData(Uri.parse(recipe.getHref()));
-//            startActivity(intent);
             ConstantMethod.loadFragment((AppCompatActivity) getActivity(),
                     R.id.fragmentContainer, RecipeDetailsFragment.newInstance(recipe,
                             ViewCompat.getTransitionName(sharedView)), sharedView);
+        });
+
+        rvRecipeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //EventBus.getDefault().post(new NewsListScrollEvent(true));
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = mGridLayoutManager.getChildCount();
+                int loadedItemCount = mGridLayoutManager.getItemCount();
+                int firstVisibleItemPosition = mGridLayoutManager.findFirstVisibleItemPosition();
+                int itemsLeft = loadedItemCount - (firstVisibleItemPosition + visibleItemCount);
+                if (itemsLeft < 1 && !fetching && !searching) {
+                    if (searchMode) {
+                        if (searchQuery != null) {
+                            pageCount++;
+                            mViewModel.searchRecipe(searchQuery, pageCount);
+                            fetching = true;
+                        }
+                    }
+                } else {
+                    fetching = false;
+                }
+            }
         });
     }
 
@@ -145,9 +168,8 @@ public class RecipeListFragment extends LifeCycleFragment {
                 searching = true;
                 searchMode = true;
                 searchQuery = query;
-//                searchQuery = query;
-//                mSongListAdapter.setSongList(new ArrayList<>());
-                mViewModel.searchRecipe(query, 1);
+                pageCount = 1;
+                mViewModel.searchRecipe(query, pageCount);
                 srlRecipeList.setRefreshing(true);
                 return false;
             }
