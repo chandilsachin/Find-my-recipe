@@ -1,6 +1,5 @@
 package com.chandilsachin.simpragmaassignment.fragments.racipeList;
 
-import android.app.SearchableInfo;
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.support.v4.app.Fragment;
 
@@ -17,18 +16,12 @@ import com.chandilsachin.simpragmaassignment.network.Service;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowActivity;
 
 import java.util.ArrayList;
@@ -39,17 +32,19 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
-import static org.junit.Assert.*;
-import static org.robolectric.util.FragmentTestUtil.startFragment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class RecipeListFragmentTest {
 
-    private MainActivity activity;
     @ClassRule
     public static InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+    List<Recipe> demoRecipeList;
+    private MainActivity activity;
 
     private static void overrideRxJavaPlugins() {
         RxJavaPlugins.setIoSchedulerHandler(
@@ -61,7 +56,6 @@ public class RecipeListFragmentTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(
                 scheduler -> Schedulers.trampoline());
     }
-    List<Recipe> demoRecipeList;
 
     @Before
     public void setUp() throws Exception {

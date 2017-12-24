@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/chandilsachin/Find-my-recipe.svg?style=svg)](https://circleci.com/gh/chandilsachin/Find-my-recipe)
+
+
 # FindMyRecipe
 
 A Simple app to search for recipes by ingredients.
