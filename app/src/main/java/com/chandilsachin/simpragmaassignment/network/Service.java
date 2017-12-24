@@ -15,6 +15,6 @@ import retrofit2.http.Query;
 public interface Service {
 
     @GET("api")
-    Single<RecipePuppy> getRecipy(@Query("i") String ingredients,
-                                        @Query("p") int page);
+    Single<RecipePuppy> getRecipe(@Query("i") String ingredients,
+                                  @Query("p") int page);
 }

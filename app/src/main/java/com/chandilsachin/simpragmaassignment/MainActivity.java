@@ -3,6 +3,7 @@ package com.chandilsachin.simpragmaassignment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.chandilsachin.simpragmaassignment.fragments.racipeList.Recipe;
 import com.chandilsachin.simpragmaassignment.fragments.racipeList.RecipeListFragment;
 import com.chandilsachin.simpragmaassignment.utils.ConstantMethod;
 
@@ -13,7 +14,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConstantMethod.loadFragment(this, R.id.fragmentContainer, RecipeListFragment.newInstance());
+        RecipeListFragment fragment = RecipeListFragment.newInstance();
+        ConstantMethod.loadFragment(this, R.id.fragmentContainer, fragment);
     }
 
     @Override

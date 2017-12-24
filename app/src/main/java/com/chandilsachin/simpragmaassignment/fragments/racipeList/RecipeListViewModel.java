@@ -24,7 +24,7 @@ public class RecipeListViewModel extends ViewModel {
     }
 
     public void searchRecipe(String ingredients, int page) {
-        networkRepo.fetchSongs(ingredients, page)
+        networkRepo.fetchRecipes(ingredients, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     recipeListLiveData.setValue(list);

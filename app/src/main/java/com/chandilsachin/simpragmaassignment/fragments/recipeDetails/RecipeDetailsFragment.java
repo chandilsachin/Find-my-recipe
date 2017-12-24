@@ -1,6 +1,7 @@
 package com.chandilsachin.simpragmaassignment.fragments.recipeDetails;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -104,6 +105,7 @@ public class RecipeDetailsFragment extends LifeCycleFragment {
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         webviewDetailsPage.getSettings().setJavaScriptEnabled(true);
         webviewDetailsPage.setWebChromeClient(new WebChromeClient() {
@@ -130,4 +132,10 @@ public class RecipeDetailsFragment extends LifeCycleFragment {
         });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        webviewDetailsPage.destroy();
+
+    }
 }
