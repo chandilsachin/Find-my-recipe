@@ -27,6 +27,10 @@ android {
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {

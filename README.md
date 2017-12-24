@@ -22,9 +22,8 @@ A Simple app to search for recipes by ingredients.
 #### Screenshots
 List page:
 
-![Image2](screenshots/Recipe_list.png)
-
+<img height="450px" src="screenshots/Recipe_list.png" />
 
 Details page:
 
-![Image2](screenshots/Recipe_details.png)
+<img height="450px" src="screenshots/Recipe_details.png" />
