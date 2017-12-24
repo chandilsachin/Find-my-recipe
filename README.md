@@ -1,4 +1,4 @@
-# SimpragmaAssignment
+# FindMyRecipe
 
 A Simple app to search for recipes by ingredients.
 
