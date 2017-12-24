@@ -34,6 +34,7 @@ public class RecipeListFragment extends LifeCycleFragment {
     Toolbar toolbar;
     @BindView(R.id.tvSearchMsg)
     TextView tvSearchMsg;
+    SearchView searchView;
 
     // -- Member variables
     private RecipeListAdapter mRecipeListAdapter;
@@ -161,7 +162,7 @@ public class RecipeListFragment extends LifeCycleFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_idSearch).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_idSearch).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

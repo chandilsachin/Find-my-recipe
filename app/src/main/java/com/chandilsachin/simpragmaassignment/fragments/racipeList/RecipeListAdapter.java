@@ -66,6 +66,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         return list.size();
     }
 
+    public Recipe getItem(int position){
+        return list.get(position);
+    }
+
     public void addItems(List<Recipe> newItems) {
         List<Recipe> oldList = new ArrayList<>(this.list);
         list.addAll(newItems);

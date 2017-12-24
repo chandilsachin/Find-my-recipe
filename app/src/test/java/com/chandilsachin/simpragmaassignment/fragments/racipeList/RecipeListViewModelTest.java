@@ -36,7 +36,6 @@ public class RecipeListViewModelTest {
 
     RecipeListViewModel viewModel;
     List<Recipe> demoRecipeList;
-    Observer<List<Recipe>> observer;
 
     private static void overrideRxJavaPlugins() {
         RxJavaPlugins.setIoSchedulerHandler(

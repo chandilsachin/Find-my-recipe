@@ -9,6 +9,7 @@ A Simple app to search for recipes by ingredients.
 4. Glide
 5. Dagger2 
 6. ButterKnife
+7. Robolectric
 
 
 ### Instructions to run the app:
@@ -17,6 +18,8 @@ A Simple app to search for recipes by ingredients.
 3. Let it download artifacts.
 4. Run the app.
 
+
+#### Screenshots
 List page:
 
 ![Image2](screenshots/Recipe_list.png)
